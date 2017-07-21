@@ -1,5 +1,14 @@
 <h1>Featured Photos</h1>
-<input type="file" (change)="featuredPhotoSelected($event)">
-<img [src]="(featuredPhotoStream | async)?.url1" alt="Featured Photo 1">
+  <div fxLayoutAlign = "space-around-center">
+  <div>
+    <button type="button" (click)="featuredInput1.click()">My pretty MD Button</button>
+    <input #featuredInput1 style="display:none;" type="file" (change)="featuredPhotoSelected($event, 'url1')">
+    <img *ngIf="(featuredPhotoStream | async)?.url1 as url" [src]="url" alt="Featured Photo 1">
+  </div>
+  <div>
+  <input type="file" (change)="featuredPhotoSelected($event, 'url2')">
+  <img *ngIf="(featuredPhotoStream | async)?.url2 as url" [src]="url" alt="Featured Photo 2">
+  </div>
+</div>
 <hr>
 

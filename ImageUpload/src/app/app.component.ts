@@ -22,17 +22,20 @@ export class AppComponent {
     this.featuredPhotoStream = this.db.object("/photos/featured");
   }
 
-  featuredPhotoSelected(event : any){
+  featuredPhotoSelected(event : any, photoName: string){
     const file: File = event.target.files[0];
     console.log("Selected file: ", file.name);
     const metaData = {'contentType': file.type};
 
     const storageRef: firebase.storage.Reference = 
-    firebase.storage().ref().child('/photos/featured/url1');
+    firebase.storage().ref().child(`/photos/featured/${photoName}`);
 
-
-    storageRef.put(file, metaData);
+    const uploadTask: firebase.storage.UploadTask = storageRef.put(file, metaData);
     console.log("Uploading file: ", file.name);
+    uploadTask.then( (uploadSnapshot: firebase.storage.UploadTaskSnapshot) => { 
+        console.log("Upload is complete");
+        firebase.database().ref(`/photos/featured/${photoName}`).set(uploadSnapshot.downloadURL);
+     })
   }
 }
 
